@@ -1,15 +1,21 @@
 "use client";
 
-import { useSearchParams } from "next/navigation";
-
-export const dynamic = "force-dynamic"; // ✅ FIX
+import { useEffect, useState } from "react";
 
 export default function Success() {
-  const params = useSearchParams();
+  const [tx, setTx] = useState<string | null>(null);
+  const [amount, setAmount] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null>(null);
 
-  const tx = params.get("tx");
-  const amount = params.get("amount");
-  const token = params.get("token");
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      const params = new URLSearchParams(window.location.search);
+
+      setTx(params.get("tx"));
+      setAmount(params.get("amount"));
+      setToken(params.get("token"));
+    }
+  }, []);
 
   return (
     <main className="min-h-screen bg-black text-white flex items-center justify-center">
@@ -28,13 +34,15 @@ export default function Success() {
           Tx: {tx}
         </p>
 
-        <a
-          href={`https://sepolia.voyager.online/tx/${tx}`}
-          target="_blank"
-          className="text-blue-400 underline"
-        >
-          View on Explorer
-        </a>
+        {tx && (
+          <a
+            href={`https://sepolia.voyager.online/tx/${tx}`}
+            target="_blank"
+            className="text-blue-400 underline"
+          >
+            View on Explorer
+          </a>
+        )}
 
       </div>
 
