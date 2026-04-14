@@ -8,14 +8,14 @@ export default function Home() {
 
   const handleConnect = async () => {
     try {
-      const starknet = await connect();
+      const starknet: any = await connect(); // ✅ FIX: force type
 
       if (!starknet) {
         alert("Wallet not found");
         return;
       }
 
-      await starknet.connect();
+      await starknet.enable(); // ✅ works with injected wallets
 
       setAddress(starknet.selectedAddress || null);
     } catch (err) {
