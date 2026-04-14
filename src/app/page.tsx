@@ -8,14 +8,14 @@ export default function Home() {
 
   const handleConnect = async () => {
     try {
-      const starknet: any = await connect(); // ✅ FIX: force type
+      const starknet: any = await connect();
 
       if (!starknet) {
         alert("Wallet not found");
         return;
       }
 
-      await starknet.enable(); // ✅ works with injected wallets
+      await starknet.enable();
 
       setAddress(starknet.selectedAddress || null);
     } catch (err) {
@@ -34,7 +34,17 @@ export default function Home() {
             Connect Wallet
           </button>
         ) : (
-          <p>Connected: {address}</p>
+          <>
+            <p className="mb-4">
+              Connected: {address.slice(0, 6)}...{address.slice(-4)}
+            </p>
+
+            <a href="/send">
+              <button className="bg-green-500 px-6 py-3 rounded-xl font-semibold">
+                Start Sending →
+              </button>
+            </a>
+          </>
         )}
       </div>
     </main>
